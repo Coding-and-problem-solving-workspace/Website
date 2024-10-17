@@ -9,20 +9,33 @@ import {
   FormHelperText,
 } from "@mui/material";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/authContext";
+import { doCreateUserWithEmailAndPassword } from "@/firebase/auth";
 
 export default function SignUp() {
+  const { userLoggedIn } = useAuth();
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [githubId, setGithubId] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isSigningUp, setIsSigningUp] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [image, setImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const fileInputRef = useRef(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (userLoggedIn) {
+      router.push("/dashboard");
+    }
+  }, [userLoggedIn]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -61,6 +74,49 @@ export default function SignUp() {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isSigningUp) {
+      setIsSigningUp(true);
+      if (password !== confirmPassword) {
+        setPasswordError("Passwords do not match");
+        return;
+      }
+
+      try {
+        const res = await doCreateUserWithEmailAndPassword(username, password);
+        const firebaseUid = res?.user?.uid;
+        const formData = new FormData();
+        formData.append("firstname", firstname);
+        formData.append("lastname", lastname);
+        formData.append("githubId", githubId);
+        formData.append("username", username);
+        formData.append("password", password);
+        formData.append("firebaseUid", firebaseUid);
+        if (image) {
+          formData.append("image", image);
+        }
+
+        const response = await axios.post(
+          "http://localhost:9000/api/v1/auth/signup",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        if (response.ok) {
+          console.log("User signed up:", response.data);
+        }
+      } catch (error) {
+        console.error("There was an error signing up:", error);
+      } finally {
+        setIsSigningUp(false);
+        router.push('/dashboard');
+      }
+    }
+  };
   return (
     <Box
       height="100vh"
@@ -88,6 +144,7 @@ export default function SignUp() {
           display="flex"
           flexDirection="column"
           width="100%"
+          onSubmit={handleSubmit}
         >
           <TextField
             label="First Name"
@@ -191,7 +248,7 @@ export default function SignUp() {
             type="submit"
             sx={{ mt: 4 }}
           >
-            Sign Up
+            {isSigningUp ? "Signing Up..." : "Sign up"}
           </Button>
         </Box>
         <Box

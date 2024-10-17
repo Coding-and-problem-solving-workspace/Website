@@ -1,11 +1,28 @@
-"use client"
-import React from "react";
-import { Container, Typography, Box, IconButton, Button } from "@mui/material";
+"use client";
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Typography,
+  Box,
+  IconButton,
+  Button,
+  Avatar,
+} from "@mui/material";
 import { GitHub } from "@mui/icons-material";
 import Navbar from "./Global/Navbar";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/authContext";
+import { useGetUserDetails } from "@/context/userContext";
 export default function LandingPage() {
-  const router = useRouter(); 
+  const [profileImg, setProfileImg] = useState("");
+  const { userLoggedIn } = useAuth();
+  const { userDetails } = useGetUserDetails();
+  const router = useRouter();
+
+  useEffect(()=>{
+    setProfileImg(userDetails?.image);
+  },[userDetails])
+
   return (
     <Container
       id="container"
@@ -21,9 +38,22 @@ export default function LandingPage() {
       }}
     >
       <Navbar>
+        <Box />
         <Box>
-          <Button className="login-button" sx={{color: "#0f8b96", border: "2px solid #0f8b96", paddingX: 3}} onClick={() => router.push('/login')}>
-            Login
+          <Button
+            className="login-button"
+            sx={{ color: "#0f8b96", border: "2px solid #0f8b96", paddingX: `${userLoggedIn===false ? 3 : 0}`, borderRadius: `${userLoggedIn===false ? "0px": "100px"}`}}
+            onClick={() => {userLoggedIn===false ? router.push("/login"): router.push("/dashboard")}}
+          >
+            {userLoggedIn ? (
+              <Avatar
+                alt="User Profile"
+                src={profileImg || "https://res.cloudinary.com/djxtxnp3i/image/upload/v1728986886/photo6_kruqk4.jpg"}
+                sx={{ cursor: "pointer" }}
+              />
+            ) : (
+              "Login"
+            )}
           </Button>
           <a
             href="https://github.com/Realtime-Live-Code-Collaboration-Space/Website"
@@ -36,7 +66,7 @@ export default function LandingPage() {
               color="inherit"
               sx={{ marginLeft: 2 }}
             >
-              <GitHub sx={{ color: '#0f8b96' }}/>
+              <GitHub sx={{ color: "#0f8b96" }} />
             </IconButton>
           </a>
         </Box>
@@ -106,8 +136,15 @@ export default function LandingPage() {
           />
         </Box>
 
-        <Box my={4} textAlign="left" sx={{border: "2px solid #0f8b96" , paddingY: 3, paddingX: 5}} id="desc">
-        <Typography variant="h5" marginBottom={2}>Why Realtime Live Code Collaboration Space?</Typography>
+        <Box
+          my={4}
+          textAlign="left"
+          sx={{ border: "2px solid #0f8b96", paddingY: 3, paddingX: 5 }}
+          id="desc"
+        >
+          <Typography variant="h5" marginBottom={2}>
+            Why Realtime Live Code Collaboration Space?
+          </Typography>
           <Typography variant="body1">
             In today's digital landscape, coding skills are highly valued. Our
             project, Realtime Live Code Collaboration Space, introduces an

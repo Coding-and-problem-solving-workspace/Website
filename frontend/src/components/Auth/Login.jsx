@@ -1,17 +1,47 @@
-"use client"
+"use client";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Box, Button, Typography, TextField, IconButton } from "@mui/material";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { doSignInUserWithEmailAndPassword } from "@/firebase/auth";
+import { useAuth } from "@/context/authContext";
 export default function Login() {
+  const { currentUser, userLoggedIn } = useAuth();
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");  
+  const [password, setPassword] = useState("");
+  const [isSigningIn, setIsSigningIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    console.log(userLoggedIn, currentUser);
+    if (userLoggedIn) {
+      router.push("/dashboard");
+    }
+  }, [userLoggedIn]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isSigningIn) {
+      setIsSigningIn(true);
+      try {
+        const res = await doSignInUserWithEmailAndPassword(username, password);
+        console.log("User logged in", res);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsSigningIn(false);
+        router.push("/dashboard");
+      }
+    }
+  };
+
   return (
     <Box
       height="100vh"
@@ -39,15 +69,16 @@ export default function Login() {
           autoComplete="off"
           display="flex"
           flexDirection="column"
+          onSubmit={handleSubmit}
         >
           <TextField
-            label="Username"
+            label="Email"
             variant="outlined"
             margin="normal"
             fullWidth
             required
             value={username}
-            onChange={(e)=>setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             label="Password"
@@ -57,18 +88,18 @@ export default function Login() {
             fullWidth
             required
             value={password}
-            onChange={(e)=>setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             InputProps={{
-                endAdornment: (
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                ),
-              }}
+              endAdornment: (
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              ),
+            }}
           />
           <Button
             variant="contained"
@@ -76,7 +107,7 @@ export default function Login() {
             type="submit"
             sx={{ mt: 4 }}
           >
-            Login
+            {isSigningIn ? "Logging In..." : "Login"}
           </Button>
         </Box>
         <Box
@@ -86,10 +117,7 @@ export default function Login() {
           alignItems="center"
           paddingX={5}
         >
-          <Link
-            href="/signup"
-            className="hover:text-blue-600 hover:underline"
-          >
+          <Link href="/signup" className="hover:text-blue-600 hover:underline">
             Create an Account
           </Link>
         </Box>
