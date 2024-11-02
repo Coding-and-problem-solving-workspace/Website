@@ -5,6 +5,7 @@ const API = axios.create({
 });
 
 export const executeCode = async (language, version, sourceCode, input) => {
+  console.log(input);
   const resp = await API.post("/execute", {
     language: language,
     version: version,
@@ -13,7 +14,7 @@ export const executeCode = async (language, version, sourceCode, input) => {
         content: sourceCode,
       },
     ],
-    // stdin: "",
+    stdin: input,
     // args: ["1", "2", "3"],
     compile_timeout: 10000,
     run_timeout: 3000,

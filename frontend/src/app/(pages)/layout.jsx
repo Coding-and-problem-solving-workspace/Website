@@ -4,7 +4,6 @@ import Navbar from "@/components/Global/Navbar";
 import { Container, Avatar, Menu, MenuItem, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { doSignOut } from "@/firebase/auth";
 import { useGetUserDetails, UserProvider } from "@/context/userContext";
 export default function pageLayout({ children }) {
@@ -40,7 +39,6 @@ export default function pageLayout({ children }) {
   };
 
   useEffect(() => {
-    // console.log(userDetails);
     setProfileImg(userDetails?.image || "https://res.cloudinary.com/djxtxnp3i/image/upload/v1728986886/photo6_kruqk4.jpg");
   }, [userDetails]);
 

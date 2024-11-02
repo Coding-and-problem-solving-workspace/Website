@@ -1,33 +1,46 @@
 import { Box, Select, MenuItem, Typography, Button } from "@mui/material";
 import { FONT_SIZES, LANGUAGE_VERSIONS } from "./data/constants";
-import axios from "axios";
 import { executeCode } from "./utils/executeCode";
 import { useState } from "react";
 export default function Topbar({
   language,
   theme,
+  error,
+  setError,
   fontSize,
   onFontSizeChange,
   onThemeChange,
   onLanguageChange,
   editorRef,
-  setOutput
+  setOutput,
+  input,
 }) {
   const [loading, setLoading] = useState(false);
   const runCode = async () => {
     const sourceCode = editorRef.current.getValue();
-    const input = "";
-    try{
+    try {
       setLoading(true);
-      const { run } = await executeCode(language, LANGUAGE_VERSIONS[language], sourceCode, input);
+      console.log("hello");
+      const { run } = await executeCode(
+        language,
+        LANGUAGE_VERSIONS[language],
+        sourceCode,
+        input
+      );
+      console.log(run);
       console.log(run.stdout);
-      setOutput(run.stdout);
-    }catch(err){
+      if (!run.stderr) {
+        setOutput(run.stdout);
+        setError(null);
+      } else {
+        setError(run.stderr);
+      }
+    } catch (err) {
       console.log(err);
-    }finally{
+    } finally {
       setLoading(false);
     }
-  }
+  };
   return (
     <Box
       sx={{
@@ -35,7 +48,7 @@ export default function Topbar({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: 2
+        padding: 2,
       }}
     >
       <Box>
@@ -56,7 +69,7 @@ export default function Topbar({
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "flex-end",
-          gap: 2
+          gap: 2,
         }}
       >
         <Box
@@ -206,17 +219,17 @@ export default function Topbar({
         <Button
           sx={{
             bgcolor: "green",
-            color: "white", 
-            fontWeight: "bold", 
-            height: "40px", 
-            width: "100px", 
-            borderRadius: "5px", 
+            color: "white",
+            fontWeight: "bold",
+            height: "40px",
+            width: "100px",
+            borderRadius: "5px",
             textTransform: "none",
             "&:hover": {
-              bgcolor: "darkgreen", 
+              bgcolor: "darkgreen",
             },
           }}
-          onClick={()=>runCode()}
+          onClick={() => runCode()}
         >
           {loading ? "RUNNING" : "RUN"}
         </Button>

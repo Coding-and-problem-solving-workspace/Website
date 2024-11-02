@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 const UserSchema = new mongoose.Schema(
   {
     firstname: {
@@ -24,6 +23,12 @@ const UserSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
+    solvedProblems: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Problem",
+      },
+    ],
   },
   { timestamps: true }
 );

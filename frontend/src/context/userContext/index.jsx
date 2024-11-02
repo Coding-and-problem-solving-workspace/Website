@@ -39,7 +39,7 @@ export function UserProvider({ children }) {
 
   return (
     <UserContext.Provider value={value}>
-      {!loading && children}
+      {!loading && userDetails && children}
     </UserContext.Provider>
   );
 }

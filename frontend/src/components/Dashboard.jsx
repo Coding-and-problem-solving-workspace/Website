@@ -30,7 +30,7 @@ export default function Dashboard() {
             backgroundColor: `${section === 2 ? "inherit" : "#0f8b96"}`,
           }}
         >
-          One
+          Remote Code Editor
         </Button>
         <Button
           onClick={() => setSection(2)}
@@ -39,7 +39,7 @@ export default function Dashboard() {
             backgroundColor: `${section === 1 ? "inherit" : "#0f8b96"}`,
           }}
         >
-          Two
+          Practice Problems
         </Button>
       </ButtonGroup>
       <Box>

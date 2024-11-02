@@ -1,6 +1,8 @@
 const admin = require("../config/firebase");
 
 const authenticateToken = async (req, res, next) => {
+  console.log(req.headers);
+  console.log("body-->", req.body);
   const token = req.headers.authorization?.split(" ")[1].trim();
   console.log(token);
   if (!token) {
