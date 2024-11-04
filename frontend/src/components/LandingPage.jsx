@@ -7,12 +7,15 @@ import {
   IconButton,
   Button,
   Avatar,
+  Card,
+  CardContent,
 } from "@mui/material";
-import { GitHub } from "@mui/icons-material";
+import { Code, Speed, Security, GroupWork ,GitHub } from "@mui/icons-material";
 import Navbar from "./Global/Navbar";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/authContext";
 import { useGetUserDetails } from "@/context/userContext";
+import Image from "next/image";
 export default function LandingPage() {
   const [profileImg, setProfileImg] = useState("");
   const { userLoggedIn } = useAuth();
@@ -122,45 +125,78 @@ export default function LandingPage() {
             </Box>
           </Box>
         </Box>
-        <Box
+        
+      <Box
           display="flex"
           justifyContent="flex-end"
           mt={5}
           id="image"
           sx={{
-            border: "5px solid white",
+            border: '5px solid white',
+            borderRadius: '20px', 
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)', 
+            overflow: 'hidden', 
           }}
         >
-          <img
-            src="/icons/codeEditorPhoto.webp"
-            alt="Coding Platform"
-            style={{ maxWidth: 1500, height: 800 }}
-          />
-        </Box>
+        <Image
+          src="/icons/codeEditorPhoto.webp"
+          alt="Coding Platform"
+          layout="responsive" // ensures the image scales correctly
+          width={1050} 
+          height={560} 
+          style={{
+            borderRadius: '20px', // Match border radius of the Box
+          }}
+        />
+      </Box>
 
-        <Box
-          my={4}
-          textAlign="left"
-          sx={{ border: "2px solid #0f8b96", paddingY: 3, paddingX: 5 }}
-          id="desc"
-        >
-          <Typography variant="h5" marginBottom={2}>
-            Why Realtime Live Code Collaboration Space ?
-          </Typography>
-          <Typography variant="body1">
-            In today's digital landscape, coding skills are highly valued. Our
-            project, Realtime Live Code Collaboration Space, introduces an
-            online coding platform designed to meet the growing need for
-            accessible coding education. The platform offers a vast library of
-            coding problems, ranging from beginner to advanced levels, across
-            various programming languages. Users can write, test, and submit
-            code, receiving instant feedback. Key features include individual
-            solution pages with YouTube tutorials, a flexible authentication
-            system for problem submission, and a robust grading system. The
-            platform aims to provide a user-friendly environment for improving
-            coding skills through diverse challenges and problems.
-          </Typography>
-        </Box>
+        
+      <Typography variant="h4" fontWeight="bold" mt={7}>
+          Key Features
+      </Typography>
+
+      <Box display="flex" flexWrap="wrap" justifyContent="center" gap={4} mt={5}>
+        {/* Key Feature Cards */}
+        {[
+          { icon: <Code sx={{ fontSize: 50, color: "#0f8b96" }} />, title: "Real-Time Coding", description: "Code in real time in an online environment" },
+          { icon: <Speed sx={{ fontSize: 50, color: "#0f8b96" }} />, title: "Instant Feedback", description: "Receive instant feedback on your code submissions." },
+          { icon: <Security sx={{ fontSize: 50, color: "#0f8b96" }} />, title: "Secure Platform", description: "Enjoy a safe and secure coding environment." },
+          { icon: <GroupWork sx={{ fontSize: 50, color: "#0f8b96" }} />, title: "Community Driven", description: "Engage with a community of passionate coders." },
+        ].map((feature, index) => (
+          <Card key={index} sx={{ width: 280, backgroundColor: "#1e3a4c", color: "white", borderRadius: "12px", textAlign: "center", transition: 'transform 0.3s',
+            '&:hover': {
+              transform: 'scale(1.05)', }}}>
+            <CardContent>
+              {feature.icon}
+              <Typography variant="h6" fontWeight="bold" mt={2}>
+                {feature.title}
+              </Typography>
+              <Typography variant="body2" mt={1}>
+                {feature.description}
+              </Typography>
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
+
+      <Box textAlign="center" mt={10} sx={{ maxWidth: 800 }}>
+        <Typography variant="h4" fontWeight="bold" mb={4}>
+          How it Works
+        </Typography>
+        {[
+          "Sign up and log in to access all features.",
+          "Choose from a variety of programming languages to get started.",
+          // "Collaborate with peers in real-time and solve coding challenges.",
+          "Receive instant feedback to improve your coding skills.",
+          "Track your progress and strive to master new coding concepts."
+        ].map((step, index) => (
+          <Box key={index} sx={{ display: "flex", alignItems: "center", mb: 3 }}>
+            <Avatar sx={{ bgcolor: "#0f8b96", marginRight: 2 }}>{index + 1}</Avatar>
+            <Typography variant="body1">{step}</Typography>
+          </Box>
+        ))}
+      </Box>
+       
       </Box>
     </Container>
   );
