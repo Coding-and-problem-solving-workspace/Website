@@ -9,7 +9,7 @@ const UserContext = React.createContext();
 export function UserProvider({ children }) {
   const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { currentUser } = useAuth();
+  const { currentUser, userLoggedIn } = useAuth();
   const fetchUserDetails = async () => {
     const token = await currentUser?.getIdToken();
     setLoading(true);
@@ -30,7 +30,9 @@ export function UserProvider({ children }) {
     }
   };
   useEffect(() => {
-    fetchUserDetails();
+    if(userLoggedIn){
+      fetchUserDetails();
+    }
   }, []);
 
   const value = {
@@ -39,7 +41,7 @@ export function UserProvider({ children }) {
 
   return (
     <UserContext.Provider value={value}>
-      {!loading && userDetails && children}
+      {!loading && children}
     </UserContext.Provider>
   );
 }

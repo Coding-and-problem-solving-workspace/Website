@@ -3,7 +3,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Box, Button, Typography, TextField, IconButton } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { doSignInUserWithEmailAndPassword } from "@/firebase/auth";
 import { useAuth } from "@/context/authContext";

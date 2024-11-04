@@ -167,7 +167,12 @@ export default function RemoteCodeEditor() {
             overflow: "hidden",
           }}
         >
-          <Typography variant="h6">Input</Typography>
+          <Typography
+            variant="h6"
+            sx={{ color: theme === "vs-dark" ? "#ffffff" : "#1e1e1e" }}
+          >
+            Input
+          </Typography>
           <TextField
             multiline
             variant="outlined"
@@ -179,7 +184,7 @@ export default function RemoteCodeEditor() {
                 fontSize: fontSize,
                 fontFamily: "monospace",
                 backgroundColor: theme === "vs-dark" ? "#1e1e1e" : "#f5f5f5",
-                color: theme === "vs-dark" ? "#ffffff" : "#000000", 
+                color: theme === "vs-dark" ? "#ffffff" : "#000000",
                 padding: "10px",
                 height: "100%",
                 borderRadius: "4px",
@@ -187,12 +192,12 @@ export default function RemoteCodeEditor() {
                   theme === "dark"
                     ? "0px 0px 10px rgba(0, 255, 0, 0.3)"
                     : "none",
-                border: "none", 
+                border: "none",
                 overflow: "auto",
-                textAlign: "left", 
+                textAlign: "left",
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "flex-start", 
+                alignItems: "flex-start",
                 justifyContent: "flex-start",
               },
             }}
@@ -201,7 +206,7 @@ export default function RemoteCodeEditor() {
               height: "400px",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  border: "none", 
+                  border: "none",
                 },
               },
             }}
@@ -218,13 +223,23 @@ export default function RemoteCodeEditor() {
         />
 
         <Box sx={{ width: `${outputWidth}%`, overflow: "hidden" }}>
-          <Typography variant="h6">Output</Typography>
+          <Typography
+            variant="h6"
+            sx={{ color: theme === "vs-dark" ? "#ffffff" : "#1e1e1e" }}
+          >
+            Output
+          </Typography>
           <Box
             sx={{
               padding: 1,
               height: "100%",
               backgroundColor: theme === "vs-dark" ? "#1e1e1e" : "#f5f5f5",
-              color: error !== null ? "#FF0000" : "#ffffff",
+              color:
+                error !== null
+                  ? "#FF0000"
+                  : theme === "vs-dark"
+                  ? "#ffffff"
+                  : "#1e1e1e",
             }}
           >
             <Typography variant="body1" sx={{ cursor: "default" }}>

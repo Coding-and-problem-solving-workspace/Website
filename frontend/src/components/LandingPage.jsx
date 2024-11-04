@@ -20,7 +20,9 @@ export default function LandingPage() {
   const router = useRouter();
 
   useEffect(()=>{
-    setProfileImg(userDetails?.image);
+    if(userLoggedIn){
+      setProfileImg(userDetails?.image);
+    }
   },[userDetails])
 
   return (

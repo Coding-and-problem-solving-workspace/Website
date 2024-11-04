@@ -23,18 +23,18 @@ export default function Profile() {
   const { currentUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [profile, setProfile] = useState({
-    firstname: userDetails.firstname || "",
-    lastname: userDetails.lastname || "",
-    email: userDetails.username || "",
-    githubId: userDetails.githubId || "",
-    image: userDetails.image || null,
+    firstname: userDetails?.firstname || "",
+    lastname: userDetails?.lastname || "",
+    email: userDetails?.username || "",
+    githubId: userDetails?.githubId || "",
+    image: userDetails?.image || null,
   });
   const [preview, setPreview] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const router = useRouter();
   useEffect(() => {
     console.log(userDetails);
-    setPreview(userDetails.image || null);
+    setPreview(userDetails?.image || null);
   }, [userDetails]);
 
   const handleFileChange = (event) => {
@@ -62,7 +62,7 @@ export default function Profile() {
     formData.append("githubId", profile.githubId);
     formData.append("username", profile.email);
 
-    if (profile.image instanceof File) {
+    if (profile?.image instanceof File) {
       formData.append("image", profile.image);
     }
 
@@ -236,7 +236,6 @@ export default function Profile() {
         </Stack>
       </form>
 
-      {/* Snackbar for Success Notification */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={3000}

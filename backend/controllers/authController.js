@@ -1,9 +1,9 @@
 const User = require("../models/User");
 const cloudinary = require("../config/cloudinary");
-
+const bcrypt = require("bcryptjs");
 //http://localhost:9000/api/v1/auth/signup
 exports.signup = async (req, res) => {
-  const { firstname, lastname, githubId, username, firebaseUid } = req.body;
+  const { firstname, lastname, githubId, username, firebaseUid, password } = req.body;
   let image = null;
   console.log(firstname, lastname, githubId, image, username);
   const existingUser = await User.findOne({
@@ -18,11 +18,14 @@ exports.signup = async (req, res) => {
       console.log(result);
       image = result.secure_url;
     }
-    console.log("inside try", firstname, lastname, githubId, image, username);
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    console.log("inside try", firstname, lastname, githubId, image, hashedPassword, username);
     const user = await User.create({
       firstname,
       lastname,
       githubId,
+      password: hashedPassword,
       username,
       image,
       firebaseUid,
