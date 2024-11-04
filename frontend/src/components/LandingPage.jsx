@@ -145,7 +145,7 @@ export default function LandingPage() {
           id="desc"
         >
           <Typography variant="h5" marginBottom={2}>
-            Why Realtime Live Code Collaboration Space?
+            Why Realtime Live Code Collaboration Space ?
           </Typography>
           <Typography variant="body1">
             In today's digital landscape, coding skills are highly valued. Our
