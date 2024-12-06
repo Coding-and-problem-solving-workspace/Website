@@ -136,16 +136,20 @@ export default function LandingPage() {
             borderRadius: '20px', 
             boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)', 
             overflow: 'hidden', 
+            border: '5px solid white',
+            borderRadius: '20px', 
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)', 
+            overflow: 'hidden', 
           }}
         >
         <Image
           src="/icons/codeEditorPhoto.webp"
           alt="Coding Platform"
-          layout="responsive" // ensures the image scales correctly
+          layout="responsive"
           width={1050} 
           height={560} 
           style={{
-            borderRadius: '20px', // Match border radius of the Box
+            borderRadius: '20px', 
           }}
         />
       </Box>
@@ -156,7 +160,6 @@ export default function LandingPage() {
       </Typography>
 
       <Box display="flex" flexWrap="wrap" justifyContent="center" gap={4} mt={5}>
-        {/* Key Feature Cards */}
         {[
           { icon: <Code sx={{ fontSize: 50, color: "#0f8b96" }} />, title: "Real-Time Coding", description: "Code in real time in an online environment" },
           { icon: <Speed sx={{ fontSize: 50, color: "#0f8b96" }} />, title: "Instant Feedback", description: "Receive instant feedback on your code submissions." },
@@ -186,7 +189,6 @@ export default function LandingPage() {
         {[
           "Sign up and log in to access all features.",
           "Choose from a variety of programming languages to get started.",
-          // "Collaborate with peers in real-time and solve coding challenges.",
           "Receive instant feedback to improve your coding skills.",
           "Track your progress and strive to master new coding concepts."
         ].map((step, index) => (

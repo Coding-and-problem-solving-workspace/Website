@@ -30,9 +30,11 @@ exports.signup = async (req, res) => {
       image,
       firebaseUid,
     });
+    const { id, firebaseUid: userFirebaseUid, password: userPassword, ...userData } = user.toObject();
     console.log({ message: "signup successful", user });
     res.status(201).json({
       message: "User created successfully",
+      user: userData
     });
   } catch (error) {
     console.log(error);

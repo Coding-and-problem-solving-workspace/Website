@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const cloudinary = require("../config/cloudinary");
 exports.getDetails = async (req, res) => {
+  console.log("when get", req.user.uid);
   try {
     const user = await User.findOne({
       firebaseUid: req.user.uid,

@@ -33,10 +33,11 @@ export function UserProvider({ children }) {
     if(userLoggedIn){
       fetchUserDetails();
     }
-  }, []);
+  }, [userLoggedIn]);
 
   const value = {
     userDetails,
+    setUserDetails
   };
 
   return (

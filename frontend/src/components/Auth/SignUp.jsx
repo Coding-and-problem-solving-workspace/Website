@@ -14,9 +14,11 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/authContext";
 import { doCreateUserWithEmailAndPassword } from "@/firebase/auth";
+import { useGetUserDetails } from "@/context/userContext";
 
 export default function SignUp() {
   const { userLoggedIn } = useAuth();
+  const { userDetails, setUserDetails } = useGetUserDetails();
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [githubId, setGithubId] = useState("");
@@ -106,14 +108,19 @@ export default function SignUp() {
             },
           }
         );
-        if (response.ok) {
+        if (response.status === 201) {
+          setUserDetails(response.data.user);
+          console.log(userDetails);
           console.log("User signed up:", response.data);
+          if(userDetails){
+            console.log("user signed up");
+          router.push('/dashboard');
+          }
         }
       } catch (error) {
         console.error("There was an error signing up:", error);
       } finally {
         setIsSigningUp(false);
-        router.push('/dashboard');
       }
     }
   };

@@ -8,6 +8,7 @@ import { doSignOut } from "@/firebase/auth";
 import { useGetUserDetails, UserProvider } from "@/context/userContext";
 export default function pageLayout({ children }) {
   const [profileImg, setProfileImg] = useState("");
+  const { setUserDetails } = useGetUserDetails();
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const { userDetails } = useGetUserDetails();
@@ -32,6 +33,7 @@ export default function pageLayout({ children }) {
       await doSignOut();
       console.log("user logged out");
       handleClose();
+      setUserDetails(null);
       router.push("/login");
     } catch (error) {
       console.error("Logout failed", error);
@@ -39,7 +41,10 @@ export default function pageLayout({ children }) {
   };
 
   useEffect(() => {
-    setProfileImg(userDetails?.image || "https://res.cloudinary.com/djxtxnp3i/image/upload/v1728986886/photo6_kruqk4.jpg");
+    setProfileImg(
+      userDetails?.image ||
+        "https://res.cloudinary.com/djxtxnp3i/image/upload/v1728986886/photo6_kruqk4.jpg"
+    );
   }, [userDetails]);
 
   return (

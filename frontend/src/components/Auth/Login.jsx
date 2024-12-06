@@ -31,12 +31,14 @@ export default function Login() {
       setIsSigningIn(true);
       try {
         const res = await doSignInUserWithEmailAndPassword(username, password);
-        console.log("User logged in", res);
+        if (res.user) {
+          console.log("User logged in", res);
+          router.push("/dashboard");
+        }
       } catch (error) {
         console.log(error);
       } finally {
         setIsSigningIn(false);
-        router.push("/dashboard");
       }
     }
   };
