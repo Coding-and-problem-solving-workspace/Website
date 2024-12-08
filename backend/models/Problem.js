@@ -6,6 +6,10 @@ const ProblemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+      required: true,
+    },
     category: {
       type: [String], 
     },
@@ -23,6 +27,9 @@ const ProblemSchema = new mongoose.Schema(
     },
     images: {
       type: [String], 
+    },
+    youtubeLink: {
+      type: String
     },
     testCases: [{
       type: mongoose.Schema.Types.ObjectId,

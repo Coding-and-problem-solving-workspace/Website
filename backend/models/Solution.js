@@ -13,6 +13,10 @@ const SolutionSchema = mongoose.Schema(
     explanation: {
       type: String,
     },
+    language: {
+      type: String,
+      enum: ['JavaScript', 'Python', 'Java', 'C++', "C"],
+    },
   },
   { timestamps: true }
 );
