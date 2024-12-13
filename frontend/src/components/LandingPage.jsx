@@ -78,7 +78,7 @@ export default function LandingPage() {
       </Navbar>
       <Box textAlign="center" mt={20}>
         <Typography variant="h2" gutterBottom fontFamily="monospace">
-          {"<"}Realtime Live Code Collaboration Space{"/>"}
+          {"<"}coding-and-problem-solving-workspace{"/>"}
         </Typography>
       </Box>
 
