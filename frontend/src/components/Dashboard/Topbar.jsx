@@ -60,7 +60,7 @@ export default function Topbar({
             fontWeight: "bold",
           }}
         >
-          Code Playground
+           {'</>Code'}
         </Typography>
       </Box>
       <Box
@@ -216,7 +216,7 @@ export default function Topbar({
             ))}
           </Select>
         </Box>
-        <Button
+        {/* <Button
           sx={{
             bgcolor: "green",
             color: "white",
@@ -232,7 +232,7 @@ export default function Topbar({
           onClick={() => runCode()}
         >
           {loading ? "RUNNING" : "RUN"}
-        </Button>
+        </Button> */}
       </Box>
     </Box>
   );

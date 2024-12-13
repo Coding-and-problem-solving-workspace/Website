@@ -64,7 +64,7 @@ export default function pageLayout({ children }) {
     >
       <Navbar>
         <Typography sx={{ color: "white", fontSize: 20 }}>
-          Coding And Problem Solving Workspace
+          Coding And Problem Solving Workspace 
         </Typography>
         <Avatar
           alt="User Profile"
