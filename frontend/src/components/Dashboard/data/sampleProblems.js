@@ -1,69 +1,67 @@
-// Sample TestCases
 const testCase1 = {
     _id: "01",
-    problemId: "problem1ObjectId", // Reference to the Problem
-    input: "5\n1 2 3 4 5", // Example input
-    expectedOutput: "15", // Example expected output
+    problemId: "problem1ObjectId",
+    input: "5\n1 2 3 4 5", 
+    expectedOutput: "15",
   };
   
   const testCase2 = {
     _id: "02",
-    problemId: "problem1ObjectId", // Reference to the Problem
-    input: "3\n1 1 1", // Example input
-    expectedOutput: "3", // Example expected output
+    problemId: "problem1ObjectId", 
+    input: "3\n1 1 1", 
+    expectedOutput: "3", 
   };
   
   const testCase3 = {
     _id: "03",
-    problemId: "problem2ObjectId", // Reference to the Problem
-    input: "10\n5 5 5 5 5 5 5 5 5 5", // Example input
-    expectedOutput: "50", // Example expected output
+    problemId: "problem2ObjectId", 
+    input: "10\n5 5 5 5 5 5 5 5 5 5", 
+    expectedOutput: "50", 
   };
   
   const testCase4 = {
     _id: "04",
-    problemId: "problem2ObjectId", // Reference to the Problem
-    input: "2\n0 0", // Example input
-    expectedOutput: "0", // Example expected output
+    problemId: "problem2ObjectId", 
+    input: "2\n0 0", 
+    expectedOutput: "0", 
   };
   
   const testCase5 = {
     _id: "05",
-    problemId: "problem3ObjectId", // Reference to the Problem
-    input: "3\n1 2 3", // Example input
-    expectedOutput: "6", // Example expected output
+    problemId: "problem3ObjectId", 
+    input: "3\n1 2 3", 
+    expectedOutput: "6",
   };
   
   const testCase6 = {
     _id: "06",
-    problemId: "problem3ObjectId", // Reference to the Problem
-    input: "4\n2 2 2 2", // Example input
-    expectedOutput: "8", // Example expected output
+    problemId: "problem3ObjectId", 
+    input: "4\n2 2 2 2", 
+    expectedOutput: "8", 
   };
   
-  // Sample Solutions
+
   const solution1 = {
     _id: "01",
-    problemId: "problem1ObjectId", // Reference to the Problem
-    code: "function sum(arr) { return arr.reduce((a, b) => a + b, 0); }", // Example solution code
+    problemId: "problem1ObjectId",
+    code: "function sum(arr) { return arr.reduce((a, b) => a + b, 0); }", 
     explanation: "This solution sums up the numbers in the array using the reduce function.",
   };
   
   const solution2 = {
     _id: "02",
-    problemId: "problem2ObjectId", // Reference to the Problem
-    code: "function multiply(arr) { return arr.reduce((a, b) => a * b, 1); }", // Example solution code
+    problemId: "problem2ObjectId", 
+    code: "function multiply(arr) { return arr.reduce((a, b) => a * b, 1); }", 
     explanation: "This solution multiplies all the numbers in the array using the reduce function.",
   };
   
   const solution3 = {
     _id: "03",
-    problemId: "problem3ObjectId", // Reference to the Problem
-    code: "function sum(arr) { return arr.reduce((a, b) => a + b, 0); }", // Example solution code
+    problemId: "problem3ObjectId", 
+    code: "function sum(arr) { return arr.reduce((a, b) => a + b, 0); }",
     explanation: "This solution sums up the numbers in the array using the reduce function.",
   };
   
-  // Sample Problems
   export const sampleProblems = [
     {
       _id: "01",

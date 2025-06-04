@@ -1,11 +1,18 @@
 "use client";
+import { io } from "socket.io-client";
 import React, { useRef, useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import Topbar from "./Topbar";
 import { CODE_SNIPPETS } from "./data/constants";
 import { Box, Typography } from "@mui/material";
+import axios from "axios";
+import { useAuth } from "@/context/authContext";
+import TestCases from "./PracticeProblems/TestCases";
 
-export default function RemoteCodeEditor({ testCases }) {
+const socket = io("http://localhost:9000");
+
+export default function RemoteCodeEditor({ testCases, problemId }) {
+  const { currentUser, userLoggedIn } = useAuth();
   const editorRef = useRef(null);
   const [language, setLanguage] = useState("javascript");
   const [code, setCode] = useState(CODE_SNIPPETS[language]);
@@ -57,14 +64,56 @@ export default function RemoteCodeEditor({ testCases }) {
     window.addEventListener("mouseup", handleMouseUp);
   };
 
-  const runCode = () => {
-    // simulate running code and updating results
-    const newResults = testCases.map((testCase, index) => {
-      // simulate code execution and comparison with expected output
-      const passed = Math.random() > 0.5; // randomly pass or fail for demo
-      return passed ? "Passed" : "Failed";
-    });
-    setResults(newResults);
+  const runCode = async () => {
+    if (!userLoggedIn) {
+      return;
+    }
+    if (!editorRef.current) {
+      console.error("Editor reference is null");
+      return;
+    }
+    try {
+      const token = await currentUser?.getIdToken();
+      console.log({
+        problemId,
+        code: editorRef.current.getValue(),
+        testCases,
+        language,
+      });
+      const resp = await axios.post(
+        "http://localhost:9000/api/v1/submission",
+        {
+          problemId,
+          code: editorRef.current.getValue(),
+          testCases,
+          language,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(resp?.data);
+      console.log("Tokens returned:", resp.data.tokens);
+
+      socket.on("submissionResult", (results) => {
+        console.log("Final Output:", results);
+        const finalres = [];
+        results.forEach((result) => {
+          console.log(`Token: ${result.token}, Output: ${result.stdout}`);
+          if (result.status_id === 3) {
+            finalres.push("Passed");
+          } else {
+            finalres.push("Failed");
+          }
+        });
+        setResults(finalres);
+      });
+    } catch (error) {
+      console.error("Error submitting code:", error);
+    }
   };
 
   return (
@@ -88,6 +137,7 @@ export default function RemoteCodeEditor({ testCases }) {
         input=""
         error={error}
         setError={setError}
+        pageType={"problem-page"}
       />
 
       <Box
@@ -124,87 +174,7 @@ export default function RemoteCodeEditor({ testCases }) {
           onMouseDown={handleVerticalResizeEditor}
         />
       </Box>
-
-      <Box
-        sx={{
-          marginTop: 2,
-          width: "100%",
-          backgroundColor: theme === "vs-dark" ? "#1e1e1e" : "#f5f5f5",
-          border: "1px solid #0f8b96",
-          borderRadius: "4px",
-          padding: 1,
-          overflow: "hidden",
-        }}
-      >
-        <Typography
-          variant="h6"
-          sx={{ color: theme === "vs-dark" ? "#ffffff" : "#1e1e1e" }}
-        >
-          Test Cases
-        </Typography>
-        <table className="min-w-full shadow-md rounded-lg">
-          <thead>
-            <tr>
-              <th className="py-3 px-6 bg-gray-200 text-left text-sm font-semibold text-gray-700">
-                Sl. No.
-              </th>
-              <th className="py-3 px-6 bg-gray-200 text-left text-sm font-semibold text-gray-700">
-                Input
-              </th>
-              <th className="py-3 px-6 bg-gray-200 text-left text-sm font-semibold text-gray-700">
-                Expected Output
-              </th>
-              <th className="py-3 px-6 bg-gray-200 text-left text-sm font-semibold text-gray-700">
-                Result
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {testCases.map((testCase, index) => (
-              <tr key={testCase._id} className="border-b">
-                <td
-                  className={`py-4 px-6 text-sm ${
-                    theme === "vs-dark" ? "text-gray-200" : "text-gray-800"
-                  }`}
-                >
-                  {index + 1}
-                </td>
-                <td
-                  className={`py-4 px-6 text-sm ${
-                    theme === "vs-dark" ? "text-gray-200" : "text-gray-800"
-                  }`}
-                >
-                  {testCase.input}
-                </td>
-                <td
-                  className={`py-4 px-6 text-sm ${
-                    theme === "vs-dark" ? "text-gray-200" : "text-gray-800"
-                  }`}
-                >
-                  {testCase.expectedOutput}
-                </td>
-                <td
-                  className={`py-4 px-6 text-sm ${
-                    results[index] === "Passed"
-                      ? "text-green-500"
-                      : results[index] === "Failed"
-                      ? "text-red-500"
-                      : "text-gray-700"
-                  }`}
-                >
-                  {results[index]}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <button
-          onClick={runCode}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-        >
-          Submit
-        </button>
-      </Box>
+      <TestCases testCases={testCases} runCode={runCode} results={results} theme={theme} />
     </Box>
   );
 }

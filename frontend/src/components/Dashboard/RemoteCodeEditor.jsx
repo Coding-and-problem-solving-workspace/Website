@@ -110,6 +110,7 @@ export default function RemoteCodeEditor() {
         input={inputCode}
         error={error}
         setError={setError}
+        pageType={"problems-list-page"}
       />
 
       <Box

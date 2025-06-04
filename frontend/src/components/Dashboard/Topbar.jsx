@@ -5,7 +5,6 @@ import { useState } from "react";
 export default function Topbar({
   language,
   theme,
-  error,
   setError,
   fontSize,
   onFontSizeChange,
@@ -14,6 +13,7 @@ export default function Topbar({
   editorRef,
   setOutput,
   input,
+  pageType
 }) {
   const [loading, setLoading] = useState(false);
   const runCode = async () => {
@@ -55,12 +55,12 @@ export default function Topbar({
         <Typography
           sx={{
             color: "white",
-            fontSize: 32,
+            fontSize: pageType === "problem-page" ? 24 : 32,
             fontFamily: "monospace",
             fontWeight: "bold",
           }}
         >
-           {'</>Code'}
+           {pageType === "problem-page" ? '</>Code' : "Code Playground"}
         </Typography>
       </Box>
       <Box
@@ -216,7 +216,7 @@ export default function Topbar({
             ))}
           </Select>
         </Box>
-        {/* <Button
+        {pageType !== "problem-page" && <Button
           sx={{
             bgcolor: "green",
             color: "white",
@@ -232,7 +232,7 @@ export default function Topbar({
           onClick={() => runCode()}
         >
           {loading ? "RUNNING" : "RUN"}
-        </Button> */}
+        </Button>}
       </Box>
     </Box>
   );

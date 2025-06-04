@@ -16,6 +16,7 @@ const ProblemSchema = new mongoose.Schema(
     difficulty: {
       type: String,
       enum: ["Easy", "Medium", "Hard"], 
+      default: "Easy"
     },
     likes: {
       type: Number,

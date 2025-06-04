@@ -2,26 +2,42 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { sampleProblems } from '../../../../components/Dashboard/data/sampleProblems';
-import RemoteCodeEditor1 from '../../../../components/Dashboard/RemoteCodeEditor1';
+import RemoteCodeEditor1 from '../../../../../components/Dashboard/RemoteCodeEditor1';
 import { Box } from '@mui/material';
+import axios from 'axios';
+import { useAuth } from '@/context/authContext';
 
 export default function ProblemPage() {
   const params = useParams();
   const { problem_id } = params;
   const [problem, setProblem] = useState(null);
-
+  const { currentUser, userLoggedIn } = useAuth();
+  const fetchProblem = async ()=>{
+    if(!userLoggedIn){
+      return;
+    }
+    const token = await currentUser?.getIdToken();
+    const resp = await axios.get(`http://localhost:9000/api/v1/problems/${problem_id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if(resp.status === 200){
+      console.log(resp.data.problem);
+      setProblem(resp?.data?.problem);
+    }
+  }
   useEffect(() => {
-    const foundProblem = sampleProblems.find((p) => p._id === problem_id);
-    setProblem(foundProblem);
+    fetchProblem();
   }, [problem_id]);
 
   if (!problem) {
-    return <div className="text-center mt-10">Problem not found.</div>;
+    return <div className="text-center mt-10">Loading...</div>;
   }
 
   return (
-    <div className="flex">
+    <div className="flex" key={problem_id}>
       <Box
       sx={{
         marginTop: 3,
@@ -59,7 +75,7 @@ export default function ProblemPage() {
       </Box>
       <div>
         <div className="mt-8">
-          <RemoteCodeEditor1 testCases={problem.testCases} />
+          <RemoteCodeEditor1 testCases={problem.testCases} problemId={problem._id} />
         </div>
       </div>
     </div>

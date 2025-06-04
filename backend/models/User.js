@@ -25,7 +25,8 @@ const UserSchema = new mongoose.Schema(
     },
     firebaseUid: {
       type: String,
-      require: true,
+      required: true,
+      unique: true
     },
     solvedProblems: [
       {

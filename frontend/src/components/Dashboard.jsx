@@ -1,12 +1,37 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, ButtonGroup } from "@mui/material";
 import RemoteCodeEditor from "./Dashboard/RemoteCodeEditor";
 import PracticeProblems from "./Dashboard/PracticeProblems";
+import { useAuth } from "@/context/authContext";
+import axios from "axios";
 export default function Dashboard() {
   const [section, setSection] = useState(1);
+  const [problems, setProblems] = useState([]);
+  const { currentUser, userLoggedIn } = useAuth();
+  const fetchProblems = async () => {
+    console.log("fetch")
+    if(!userLoggedIn){
+      return;
+    }
+    const token = await currentUser?.getIdToken();
+    const resp = await axios.get("http://localhost:9000/api/v1/problems", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (resp.status === 200) {
+      console.log(resp.data.problems);
+      setProblems(resp.data.problems);
+    }
+  };
+  useEffect(() => {
+    fetchProblems();
+  }, []);
+
   return (
-    <Box sx={{ backgroundColor: "inherit", height: "100vh", width: "100%" }}>
+    <Box sx={{ backgroundColor: "inherit", height: "100%", width: "100%" }}>
       <ButtonGroup
         disableElevation
         variant="outlined"
@@ -43,7 +68,7 @@ export default function Dashboard() {
         </Button>
       </ButtonGroup>
       <Box>
-          {section === 1 ? <RemoteCodeEditor/> : <PracticeProblems/>}
+          {section === 1 ? <RemoteCodeEditor/> : <PracticeProblems problems={problems}/>}
       </Box>
     </Box>
   );
