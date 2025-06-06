@@ -11,6 +11,7 @@ export default function ProblemPage() {
   const params = useParams();
   const { problem_id } = params;
   const [problem, setProblem] = useState(null);
+  
   const { currentUser, userLoggedIn } = useAuth();
   const fetchProblem = async ()=>{
     if(!userLoggedIn){
@@ -28,6 +29,7 @@ export default function ProblemPage() {
       setProblem(resp?.data?.problem);
     }
   }
+
   useEffect(() => {
     fetchProblem();
   }, [problem_id]);
@@ -37,48 +39,48 @@ export default function ProblemPage() {
   }
 
   return (
-    <div className="flex" key={problem_id}>
+    <div style={{ display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'flex-start' }} key={problem_id}>
       <Box
-      sx={{
-        marginTop: 3,
-        marginX: 2,
-        border: "1px solid #0f8b96",
-        position: "relative",
-      }}
-    >
-      <div className="container mx-auto py-8 px-4">
-        <h1 className="text-4xl font-bold text-center text-blue-700">{problem.title}</h1>
-        <p className="mt-6 text-lg text-gray-200">{problem.description}</p>
-
-        <div className="mt-6">
-        {problem.testCases.slice(0, 2).map((testCase, index) => (
-            <div key={testCase._id} className="mb-6">
-              <h3 className="text-2xl font-semibold mb-2">Sample Input {index + 1}</h3>
-              <pre className="bg-gray-700 p-4 rounded">{testCase.input}</pre>
-
-              <h3 className="text-2xl font-semibold mt-4 mb-2">Expected Output {index + 1}</h3>
-              <pre className="bg-gray-700 p-4 rounded">{testCase.expectedOutput}</pre>
+        sx={{
+          mt: 4,
+          mx: 2,
+          border: '1.5px solid #0f8b96',
+          borderRadius: '32px',
+          background: 'rgba(30,42,76,0.90)',
+          boxShadow: '0 8px 32px 0 rgba(127,90,240,0.10)',
+          backdropFilter: 'blur(12px)',
+          p: { xs: 2, md: 6 },
+          minWidth: 420,
+          maxWidth: 600,
+          color: '#e0e7ef',
+        }}
+      >
+        <h1 style={{
+          fontSize: '2.2rem',
+          fontWeight: 900,
+          textAlign: 'center',
+          background: 'linear-gradient(90deg, #7f5af0 30%, #0f8b96 80%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          marginBottom: '2rem',
+          letterSpacing: 1.2,
+          fontFamily: 'monospace',
+        }}>{problem.title}</h1>
+        <p style={{ fontSize: 18, color: '#e0e7ef', marginBottom: 24 }}>{problem.description}</p>
+        <div style={{ marginTop: 24 }}>
+          {problem.testCases.slice(0, 2).map((testCase, index) => (
+            <div key={testCase._id} style={{ marginBottom: 32 }}>
+              <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8, color: '#7f5af0' }}>Sample Input {index + 1}</h3>
+              <pre style={{ background: 'rgba(24,28,43,0.65)', color: '#0f8b96', padding: 16, borderRadius: 12, fontSize: 16 }}>{testCase.input}</pre>
+              <h3 style={{ fontSize: 20, fontWeight: 700, marginTop: 16, marginBottom: 8, color: '#7f5af0' }}>Expected Output {index + 1}</h3>
+              <pre style={{ background: 'rgba(24,28,43,0.65)', color: '#0f8b96', padding: 16, borderRadius: 12, fontSize: 16 }}>{testCase.expectedOutput}</pre>
             </div>
           ))}
         </div>
-        {/* <div
-          id="terminal"
-          className="mt-8 bg-black text-green-300 p-4 rounded h-64 overflow-auto font-mono text-sm"
-        >
-          <p>$ Running your code...</p>
-          <p>Output:</p>
-          <p>{problem.testCases[0].expectedOutput}</p>
-          <p className="mt-4">Execution Time: 0.05s</p>
-          <p>Memory Usage: 15MB</p>
-        </div> */}
-      </div>
       </Box>
-      <div>
-        <div className="mt-8">
-          <RemoteCodeEditor1 testCases={problem.testCases} problemId={problem._id} />
-        </div>
-      </div>
+      <Box sx={{ flex: 1, ml: 4, mt: 4 }}>
+        <RemoteCodeEditor1 testCases={problem.testCases} problemId={problem._id}/>
+      </Box>
     </div>
   );
 }
-  

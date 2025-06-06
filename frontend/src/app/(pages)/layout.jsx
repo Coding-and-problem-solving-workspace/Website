@@ -1,12 +1,19 @@
 "use client";
 
 import Navbar from "@/components/Global/Navbar";
-import { Container, Avatar, Menu, MenuItem, Typography } from "@mui/material";
+import {
+  Container,
+  Avatar,
+  Menu,
+  MenuItem,
+  Typography,
+  Box,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { doSignOut } from "@/firebase/auth";
 import { useGetUserDetails, UserProvider } from "@/context/userContext";
-export default function pageLayout({ children }) {
+export default function PageLayout({ children }) {
   const [profileImg, setProfileImg] = useState("");
   const { setUserDetails } = useGetUserDetails();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -50,30 +57,78 @@ export default function pageLayout({ children }) {
   return (
     <Container
       id="container"
+      disableGutters
+      maxWidth={false}
       sx={{
-        background: "linear-gradient(150deg, #010203 50%, #0f8b96 90%)",
+        background: "linear-gradient(120deg, #181c2b 0%, #0f8b96 100%)",
         minHeight: "100vh",
         minWidth: "100%",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
-        color: "whitesmoke",
-        paddingTop: "80px",
+        color: "#e0e7ef",
+        px: { xs: 0, md: 4 },
+        pt: { xs: 12, md: 14 },
+        pb: 0,
+        position: "relative",
+        zIndex: 1,
       }}
     >
+      {/* Floating glassmorphic navbar shadow */}
       <Navbar>
-        <Typography sx={{ color: "white", fontSize: 20 }}>
-          Coding And Problem Solving Workspace 
+        <Typography
+          sx={{
+            color: "transparent",
+            fontSize: { xs: 20, md: 26 },
+            fontWeight: 900,
+            letterSpacing: 1.5,
+            background:
+              "linear-gradient(90deg, #7f5af0 30%, #0f8b96 80%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            textShadow: "0 2px 12px rgba(127,90,240,0.10)",
+            fontFamily: "monospace",
+            ml: 2,
+          }}
+        >
+          Coding And Problem Solving Workspace
         </Typography>
         <Avatar
           alt="User Profile"
           src={profileImg}
-          sx={{ cursor: "pointer" }}
+          sx={{
+            cursor: "pointer",
+            width: 38,
+            height: 38,
+            border: "2px solid #7f5af0",
+            boxShadow: "0 2px 8px #0f8b96",
+            ml: 2,
+          }}
           onClick={handleAvatarClick}
         />
       </Navbar>
-      {children}
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 1400,
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          mt: { xs: 4, md: 8 },
+          mb: 0,
+          borderRadius: "32px",
+          background: "rgba(30,42,76,0.85)",
+          boxShadow: "0 8px 32px 0 rgba(127,90,240,0.10)",
+          border: "1.5px solid rgba(127,90,240,0.10)",
+          backdropFilter: "blur(12px)",
+          p: { xs: 2, md: 6 },
+          minHeight: "70vh",
+        }}
+      >
+        {children}
+      </Box>
       <Menu
         anchorEl={anchorEl}
         open={open}
@@ -82,8 +137,21 @@ export default function pageLayout({ children }) {
           sx: {
             mt: 1.5,
             ml: -1,
+            borderRadius: "18px",
+            background: "rgba(30,42,76,0.95)",
+            color: "#fff",
+            boxShadow: "0 4px 32px rgba(127,90,240,0.10)",
+            border: "1.5px solid rgba(127,90,240,0.10)",
+            backdropFilter: "blur(10px)",
             "& .MuiMenuItem-root": {
-              color: "black",
+              color: "#fff",
+              fontWeight: 600,
+              fontSize: 17,
+              borderRadius: "12px",
+              transition: "background 0.2s",
+              "&:hover": {
+                background: "rgba(127,90,240,0.10)",
+              },
             },
           },
         }}

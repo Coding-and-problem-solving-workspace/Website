@@ -94,14 +94,19 @@ export default function Profile() {
   return (
     <Box
       sx={{
-        height: "fit-content",
-        width: "100%",
-        bgcolor: "inherit",
-        color: "#fff",
+        background: "rgba(30,42,76,0.90)",
+        borderRadius: "32px",
+        boxShadow: "0 8px 32px 0 rgba(127,90,240,0.10)",
+        border: "1.5px solid rgba(127,90,240,0.10)",
+        backdropFilter: "blur(12px)",
+        p: { xs: 2, md: 6 },
+        mt: { xs: 2, md: 4 },
+        color: "#e0e7ef",
+        maxWidth: 600,
+        mx: "auto",
         display: "flex",
-        justifyContent: "center",
+        flexDirection: "column",
         alignItems: "center",
-        position: "relative",
       }}
     >
       <IconButton
@@ -113,7 +118,7 @@ export default function Profile() {
           bgcolor: "white",
           color: "black",
           "&:hover": {
-            bgcolor: "lightgray", 
+            bgcolor: "lightgray",
           },
         }}
       >
