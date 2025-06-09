@@ -39,10 +39,7 @@ exports.createSubmission = async (req, res) => {
     const submission = new Submission(finalSubmission);
     await submission.save();
 
-    if (!user.solvedProblems.includes(problemId)) {
-      user.solvedProblems.push(problemId);
-      await user.save();
-    }
+
 
     console.log(finalSubmission);
 
